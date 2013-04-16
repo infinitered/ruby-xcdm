@@ -5,7 +5,9 @@ require 'builder'
 class Entity
 
   DEFAULT_PROPERTY_ATTRIBUTES = { optional: 'YES', syncable: 'YES' }
+
   DEFAULT_RELATIONSHIP_ATTRIBUTES = { optional: 'YES', deletionRule: 'Nullify', syncable: 'YES' }
+
   TYPE_MAPPING = {
     integer16:     'Integer 16',
     integer32:     'Integer 32',
@@ -23,6 +25,7 @@ class Entity
 
   attr_reader :name, :properties, :relationships
 
+
   def initialize(name, options = {})
     @name = name
     @properties = []
@@ -35,11 +38,25 @@ class Entity
   
   def property(name, type, options = {})
     property = {}
+
     property[:attributeType] = self.class.convert_type(type)
     property[:name] = name
+
+    if !options[:default].nil?
+      property[:defaultValueString] = normalize_value(options.delete(:default))
+    end
+
     normalize_values(options, property)
     raw_property(property)
   end
+
+  # Make shortcut property methods for each data type
+  TYPE_MAPPING.keys.each do |type|
+    define_method(type) do |name, options = {}|
+      property(name, type, options)
+    end
+  end
+
 
   def raw_relationship(options)
     @relationships << DEFAULT_RELATIONSHIP_ATTRIBUTES.merge(options)
@@ -61,6 +78,7 @@ class Entity
     raw_relationship(relationship)
   end
 
+
   def has_one(name, options = {})
     relationship(name, {maxCount: 1, minCount: 1}.merge(options))
   end
@@ -69,15 +87,9 @@ class Entity
     relationship(name, {maxCount: -1, minCount: 1}.merge(options))
   end
 
+
   def self.convert_type(type)
     TYPE_MAPPING[type]
-  end
-
-  # Make shortcut property methods for each data type
-  TYPE_MAPPING.keys.each do |type|
-    define_method(type) do |name, options = {}|
-      property(name, type, options)
-    end
   end
 
   def to_xml
@@ -97,13 +109,16 @@ class Entity
 
   def normalize_values(source, destination)
     source.each do |key, value|
-      value = case value
-              when false; 'NO'
-              when true; 'YES'
-              else value.to_s
-              end
-      destination[key] = value
+      destination[key] = normalize_value(value)
     end
   end
 
-end
+  def normalize_value(value)
+    case value
+    when false; 'NO'
+    when true; 'YES'
+    else value.to_s
+    end
+  end
+
+  end

@@ -38,8 +38,4 @@ __END__
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="articles" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Article" inverseName="author" inverseEntity="Author" syncable="YES"/>
     </entity>
-    <elements>
-        <element name="Author" positionX="160" positionY="192" width="128" height="90"/>
-        <element name="Article" positionX="160" positionY="192" width="128" height="135"/>
-    </elements>
 </model>
