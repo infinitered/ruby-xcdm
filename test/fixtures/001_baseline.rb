@@ -9,13 +9,13 @@ schema "0.0.1" do
     datetime  :publishedAt, default: false
     string    :title,       optional: false
 
-    #has_one   :author
+    has_one   :author
   end
 
   entity "Author" do
     string :name, optional: false
     float :fee
-    #has_many :articles 
+    has_many :articles 
   end
 
 end
@@ -31,12 +31,12 @@ __END__
         <attribute name="published" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="publishedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="author" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Author" inverseName="articles" inverseEntity="Author" syncable="YES"/>
+        <relationship name="author" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Author" inverseName="articles" inverseEntity="Article" syncable="YES"/>
     </entity>
     <entity name="Author" syncable="YES">
         <attribute name="fee" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="articles" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Article" inverseName="author" inverseEntity="Article" syncable="YES"/>
+        <relationship name="articles" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Article" inverseName="author" inverseEntity="Author" syncable="YES"/>
     </entity>
     <elements>
         <element name="Author" positionX="160" positionY="192" width="128" height="90"/>

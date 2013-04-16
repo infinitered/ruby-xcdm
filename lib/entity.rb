@@ -1,5 +1,6 @@
 
 require 'active_support/all'
+require 'builder'
 
 class Entity
 
@@ -34,7 +35,7 @@ class Entity
   
   def property(name, type, options = {})
     property = {}
-    property[:propertyType] = self.class.convert_type(type)
+    property[:attributeType] = self.class.convert_type(type)
     property[:name] = name
     normalize_values(options, property)
     raw_property(property)
@@ -46,8 +47,8 @@ class Entity
 
   def relationship(name, options = {})
     relationship = {}
-    relationship[:name] = name
-    relationship[:destinationEntity] = name.classify
+    relationship[:name] = name.to_s
+    relationship[:destinationEntity] = name.to_s.classify
     if options[:maxCount].to_s == "1"
       relationship[:inverseName] = self.name.underscore.pluralize
     else
@@ -76,6 +77,19 @@ class Entity
   TYPE_MAPPING.keys.each do |type|
     define_method(type) do |name, options = {}|
       property(name, type, options)
+    end
+  end
+
+  def to_xml
+    builder = Builder::XmlMarkup.new(:indent => 2)
+    builder.entity(name: name, syncable: 'YES') do |xml|
+      properties.each do |property|
+        xml.attribute(property)
+      end
+
+      relationships.each do |relationship|
+        xml.relationship(relationship)
+      end
     end
   end
 

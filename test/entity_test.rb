@@ -1,6 +1,8 @@
 
 require 'test/unit'
 require 'entity'
+require 'turn'
+require 'rexml/document'
 
 class EntityTest < Test::Unit::TestCase
 
@@ -13,24 +15,24 @@ class EntityTest < Test::Unit::TestCase
   end
 
   def test_raw_property
-    opts = { propertyType: "Integer 32", name: 'foobar' }
+    opts = { attributeType: "Integer 32", name: 'foobar' }
     e.raw_property(opts)
     assert_equal [opts.merge(optional: 'YES', syncable: 'YES')], e.properties
   end
 
   def test_property_integer32
     e.property('foobar', :integer32, optional: false)
-    assert_equal [{ optional: 'NO', syncable: 'YES', propertyType: "Integer 32", name: 'foobar' }], e.properties
+    assert_equal [{ optional: 'NO', syncable: 'YES', attributeType: "Integer 32", name: 'foobar' }], e.properties
   end
 
   def test_property_datetime
     e.property('fazbit', :datetime, optional: false)
-    assert_equal [{ optional: 'NO', syncable: 'YES', propertyType: "Date", name: 'fazbit' }], e.properties
+    assert_equal [{ optional: 'NO', syncable: 'YES', attributeType: "Date", name: 'fazbit' }], e.properties
   end
 
   def test_property_short_form_string
     e.string 'frobnoz', optional: false
-    assert_equal [{ optional: 'NO', syncable: 'YES', propertyType: "String", name: 'frobnoz' }], e.properties
+    assert_equal [{ optional: 'NO', syncable: 'YES', attributeType: "String", name: 'frobnoz' }], e.properties
   end
 
   def test_convert_type
@@ -74,6 +76,28 @@ class EntityTest < Test::Unit::TestCase
       "Author", inverseName: "article", inverseEntity: "Article" }], e.relationships
   end
 
+  def test_to_xml
+    expected = REXML::Document.new %{
+<entity name="Article" syncable="YES">
+  <attribute name="body" optional="NO" attributeType="String" syncable="YES"/>
+  <attribute name="length" optional="YES" attributeType="Integer 32" syncable="YES"/>
+  <attribute name="published" optional="YES" attributeType="Boolean" syncable="YES"/>
+  <attribute name="publishedAt" optional="YES" attributeType="Date" syncable="YES"/>
+  <attribute name="title" optional="NO" attributeType="String" syncable="YES"/>
+  <relationship name="author" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Author" inverseName="articles" inverseEntity="Article" syncable="YES"/>
+</entity>
+    }
 
+    e.string    :body,        optional: false
+    e.integer32 :length
+    e.boolean   :published #,   default: false
+    e.datetime  :publishedAt #, default: false
+    e.string    :title,       optional: false
+
+    e.has_one   :author
+
+    assert_equal expected.to_s.strip, REXML::Document.new(e.to_xml).to_s.strip
+    
+  end
 
 end
