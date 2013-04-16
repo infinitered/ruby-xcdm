@@ -1,7 +1,10 @@
 
+require 'active_support/all'
+
 class Entity
 
-  DEFAULT_ATTRIBUTES = { :optional => 'YES', :syncable => 'YES' }
+  DEFAULT_PROPERTY_ATTRIBUTES = { optional: 'YES', syncable: 'YES' }
+  DEFAULT_RELATIONSHIP_ATTRIBUTES = { optional: 'YES', deletionRule: 'Nullify', syncable: 'YES' }
   TYPE_MAPPING = {
     integer16:     'Integer 16',
     integer32:     'Integer 32',
@@ -17,30 +20,52 @@ class Entity
   }
 
 
-  attr_reader :name, :properties
+  attr_reader :name, :properties, :relationships
 
   def initialize(name, options = {})
     @name = name
     @properties = []
+    @relationships = []
   end
 
   def raw_property(options)
-    @properties << DEFAULT_ATTRIBUTES.merge(options)
+    @properties << DEFAULT_PROPERTY_ATTRIBUTES.merge(options)
   end
   
   def property(name, type, options = {})
     property = {}
     property[:propertyType] = self.class.convert_type(type)
     property[:name] = name
-    options.each do |key, value|
-      value = case value
-              when false; 'NO'
-              when true; 'YES'
-              else value
-              end
-      property[key] = value
+    normalize_values(options, property)
+    raw_property(property)
+  end
+
+  def raw_relationship(options)
+    @relationships << DEFAULT_RELATIONSHIP_ATTRIBUTES.merge(options)
+  end
+
+  def relationship(name, options = {})
+    relationship = {}
+    relationship[:name] = name
+    relationship[:destinationEntity] = name.classify
+    if options[:maxCount].to_s == "1"
+      relationship[:inverseName] = self.name.underscore.pluralize
+    else
+      relationship[:inverseName] = self.name.underscore
     end
-    @properties << DEFAULT_ATTRIBUTES.merge(property)
+    relationship[:inverseEntity] = self.name.classify
+
+    normalize_values(options, relationship)
+
+    raw_relationship(relationship)
+  end
+
+  def has_one(name, options = {})
+    relationship(name, {maxCount: 1, minCount: 1}.merge(options))
+  end
+
+  def has_many(name, options = {})
+    relationship(name, {maxCount: -1, minCount: 1}.merge(options))
   end
 
   def self.convert_type(type)
@@ -51,6 +76,19 @@ class Entity
   TYPE_MAPPING.keys.each do |type|
     define_method(type) do |name, options = {}|
       property(name, type, options)
+    end
+  end
+
+  private
+
+  def normalize_values(source, destination)
+    source.each do |key, value|
+      value = case value
+              when false; 'NO'
+              when true; 'YES'
+              else value.to_s
+              end
+      destination[key] = value
     end
   end
 

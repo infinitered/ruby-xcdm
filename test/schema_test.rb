@@ -25,6 +25,7 @@ class SchemaTest < Test::Unit::TestCase
     schema = loader.load_file(fixture)
     assert_not_nil schema
     assert_equal '0.0.1', schema.version
+    assert_equal schema, loader.schemas.first
     assert_equal ['Article', 'Author'], schema.entities.map(&:name)
   end
 

@@ -16,8 +16,15 @@ class Schema
 
   class Loader
 
+    attr_reader :schemas
+
+    def initialize
+      @schemas = []
+    end
+
     def schema(version, &block)
       @found_schema = Schema.new(version).tap { |s| s.instance_eval(&block) }
+      @schemas << @found_schema 
     end
 
     def load_file(file)

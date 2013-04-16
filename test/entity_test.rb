@@ -5,11 +5,11 @@ require 'entity'
 class EntityTest < Test::Unit::TestCase
 
   def e
-    @e ||= Entity.new("MyTest") 
+    @e ||= Entity.new("Article") 
   end
 
   def test_initialize
-    assert_equal "MyTest", e.name
+    assert_equal "Article", e.name
   end
 
   def test_raw_property
@@ -46,5 +46,34 @@ class EntityTest < Test::Unit::TestCase
     assert_equal 'Binary Data',   Entity.convert_type(:binary)
     assert_equal 'Transformable', Entity.convert_type(:transformable)
   end
+
+  def test_raw_relationship
+    opts = { name: "author", minCount: "1", maxCount: "1", destinationEntity: "Author", inverseName: "articles", inverseEntity: "Article" }
+    e.raw_relationship(opts)
+    assert_equal [opts.merge(optional: "YES", deletionRule: "Nullify", syncable: "YES")], e.relationships
+  end
+
+  def test_relationship
+    e.relationship('author', maxCount: 1, minCount: 1)
+    assert_equal [{ optional: "YES", deletionRule: "Nullify", syncable: "YES",
+      name: "author", minCount: "1", maxCount: "1", destinationEntity:
+      "Author", inverseName: "articles", inverseEntity: "Article" }], e.relationships
+  end
+
+  def test_has_one
+    e.has_one 'author'
+    assert_equal [{ optional: "YES", deletionRule: "Nullify", syncable: "YES",
+      name: "author", minCount: "1", maxCount: "1", destinationEntity:
+      "Author", inverseName: "articles", inverseEntity: "Article" }], e.relationships
+  end
+
+  def test_has_many
+    e.has_many 'authors'
+    assert_equal [{ optional: "YES", deletionRule: "Nullify", syncable: "YES",
+      name: "authors", minCount: "1", maxCount: "-1", destinationEntity:
+      "Author", inverseName: "article", inverseEntity: "Article" }], e.relationships
+  end
+
+
 
 end
