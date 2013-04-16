@@ -14,6 +14,31 @@ class Schema
     @entities << Entity.new(name).tap { |e| e.instance_eval(&block) }
   end
 
+  def to_xml(builder = nil)
+
+    builder ||= Builder::XmlMarkup.new(:indent => 2)
+
+    builder.instruct! :xml, :standalone => 'yes'
+
+    attrs = {
+      name: "",
+      userDefinedModelVersionIdentifier: version,
+      type: "com.apple.IDECoreDataModeler.DataModel",
+      documentVersion: "1.0", 
+      lastSavedToolsVersion: "2061",
+      systemVersion: "12D78",
+      minimumToolsVersion: "Xcode 4.3",
+      macOSVersion: "Automatic",
+      iOSVersion: "Automatic"
+    }
+
+    builder.model(attrs) do |builder|
+      entities.each do |entity|
+        entity.to_xml(builder)
+      end
+    end
+  end
+
   class Loader
 
     attr_reader :schemas

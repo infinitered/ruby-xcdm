@@ -13,8 +13,8 @@ schema "0.0.1" do
   end
 
   entity "Author" do
-    string :name, optional: false
     float :fee
+    string :name, optional: false
     has_many :articles 
   end
 

@@ -22,7 +22,7 @@ class EntityTest < Test::Unit::TestCase
 
   def test_property_integer32
     e.property 'foobar', :integer32, optional: false
-    assert_equal [{ optional: 'NO', syncable: 'YES', attributeType: 'Integer 32', name: 'foobar' }], e.properties
+    assert_equal [{ optional: 'NO', syncable: 'YES', attributeType: 'Integer 32', name: 'foobar', defaultValueString: "0" }], e.properties
   end
 
   def test_property_datetime
@@ -85,7 +85,7 @@ class EntityTest < Test::Unit::TestCase
     expected = REXML::Document.new %{
 <entity name="Article" syncable="YES">
   <attribute name="body" optional="NO" attributeType="String" syncable="YES"/>
-  <attribute name="length" optional="YES" attributeType="Integer 32" syncable="YES"/>
+  <attribute name="length" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
   <attribute name="published" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
   <attribute name="publishedAt" optional="YES" attributeType="Date" defaultValueString="NO" syncable="YES"/>
   <attribute name="title" optional="NO" attributeType="String" syncable="YES"/>

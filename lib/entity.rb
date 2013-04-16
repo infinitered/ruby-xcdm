@@ -40,10 +40,14 @@ class Entity
     property = {}
 
     property[:attributeType] = self.class.convert_type(type)
-    property[:name] = name
+    property[:name] = name.to_s
 
     if !options[:default].nil?
       property[:defaultValueString] = normalize_value(options.delete(:default))
+    elsif [:integer16, :integer32, :integer64].include?(type)
+      property[:defaultValueString] = "0"
+    elsif [:float, :double, :decimal].include?(type)
+      property[:defaultValueString] = "0.0"
     end
 
     normalize_values(options, property)
@@ -92,8 +96,8 @@ class Entity
     TYPE_MAPPING[type]
   end
 
-  def to_xml
-    builder = Builder::XmlMarkup.new(:indent => 2)
+  def to_xml(builder = nil)
+    builder ||= Builder::XmlMarkup.new(:indent => 2)
     builder.entity(name: name, syncable: 'YES') do |xml|
       properties.each do |property|
         xml.attribute(property)
