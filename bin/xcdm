@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
-require 'xcdm/schema'
+require 'rubygems'
+gem 'ruby-xcdm'
+require 'xcdm'
 
 runner = XCDM::Schema::Runner.new(*ARGV)
 runner.load_all

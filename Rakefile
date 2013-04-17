@@ -1,5 +1,6 @@
 
 require 'rake/testtask'
+require 'bundler/gem_tasks'
 
 task :test do
   Bundler.require('test') if defined?(Bundler)
