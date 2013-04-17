@@ -1,6 +1,7 @@
 
 require 'xcdm/entity'
 require 'fileutils'
+require 'plist'
 
 module XCDM
   class Schema
@@ -94,6 +95,12 @@ module XCDM
             f.write(schema.to_xml)
           end
         end
+
+        max = @loader.schemas.map(&:version).max
+        File.open(File.join(@container_path, ".xccurrentversion"), "w+") do |f|
+          f.write({ "_XCCurrentVersionName" => "#{max}.xcdatamodel" }.to_plist)
+        end
+
       end
 
     end

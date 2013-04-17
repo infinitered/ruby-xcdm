@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "builder", "~> 3.2"
   spec.add_dependency "activesupport", "~> 3.2"
+  spec.add_dependency "plist", "~> 3.1"
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
