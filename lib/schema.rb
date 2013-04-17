@@ -1,5 +1,6 @@
 
 require 'entity'
+require 'fileutils'
 
 class Schema
 
@@ -47,6 +48,10 @@ class Schema
       @schemas = []
     end
 
+    def datamodel_file(version)
+      File.join(@container_path, "#{version}.xcdatamodel", 'contents')
+    end
+
     def schema(version, &block)
       @found_schema = Schema.new(version).tap { |s| s.instance_eval(&block) }
       @schemas << @found_schema 
@@ -59,6 +64,31 @@ class Schema
       @found_schema
     end
 
+    class Runner
+      def initialize(name, inpath, outpath)
+        @inpath = inpath
+        @name = name
+        @container_path = File.join(outpath, "#{name}.xcdatamodeld")
+        @loader = Loader.new
+      end
+
+      def load_all
+        Dir.entries(inpath).each do |file|
+          if File.file?(file)
+            load_file(file)
+          end
+        end
+      end
+
+      def write_all
+        schemas.each do |schema|
+          File.open(datamodel_file(schema.version), "w") do |f|
+            f.write(schema.to_xml)
+          end
+        end
+      end
+
+    end
   end
 
 end
