@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+require 'xcdm/schema'
+
+runner = XCDM::Schema::Runner.new(*ARGV)
+runner.load_all
+runner.write_all
