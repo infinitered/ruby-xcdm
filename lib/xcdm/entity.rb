@@ -70,13 +70,12 @@ module XCDM
     def relationship(name, options = {})
       relationship = {}
       relationship[:name] = name.to_s
-      relationship[:destinationEntity] = name.to_s.classify
+      relationship[:destinationEntity] = relationship[:inverseEntity] = name.to_s.classify
       if options[:maxCount].to_s == "1"
         relationship[:inverseName] = self.name.underscore.pluralize
       else
         relationship[:inverseName] = self.name.underscore
       end
-      relationship[:inverseEntity] = self.name.classify
 
       normalize_values(options, relationship)
 

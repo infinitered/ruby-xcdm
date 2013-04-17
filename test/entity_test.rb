@@ -56,7 +56,7 @@ module XCDM
     end
 
     def test_raw_relationship
-      opts = { name: "author", minCount: "1", maxCount: "1", destinationEntity: "Author", inverseName: "articles", inverseEntity: "Article" }
+      opts = { name: "author", minCount: "1", maxCount: "1", destinationEntity: "Author", inverseName: "articles", inverseEntity: "Author" }
       e.raw_relationship(opts)
       assert_equal [opts.merge(optional: "YES", deletionRule: "Nullify", syncable: "YES")], e.relationships
     end
@@ -65,21 +65,21 @@ module XCDM
       e.relationship('author', maxCount: 1, minCount: 1)
       assert_equal [{ optional: "YES", deletionRule: "Nullify", syncable: "YES",
                       name: "author", minCount: "1", maxCount: "1", destinationEntity:
-                      "Author", inverseName: "articles", inverseEntity: "Article" }], e.relationships
+                      "Author", inverseName: "articles", inverseEntity: "Author" }], e.relationships
     end
 
     def test_has_one
       e.has_one 'author'
       assert_equal [{ optional: "YES", deletionRule: "Nullify", syncable: "YES",
                       name: "author", minCount: "1", maxCount: "1", destinationEntity:
-                      "Author", inverseName: "articles", inverseEntity: "Article" }], e.relationships
+                      "Author", inverseName: "articles", inverseEntity: "Author" }], e.relationships
     end
 
     def test_has_many
       e.has_many 'authors'
       assert_equal [{ optional: "YES", deletionRule: "Nullify", syncable: "YES",
                       name: "authors", minCount: "1", maxCount: "-1", destinationEntity:
-                      "Author", inverseName: "article", inverseEntity: "Article" }], e.relationships
+                      "Author", inverseName: "article", inverseEntity: "Author" }], e.relationships
     end
 
     def test_to_xml
@@ -90,7 +90,7 @@ module XCDM
   <attribute name="published" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
   <attribute name="publishedAt" optional="YES" attributeType="Date" defaultValueString="NO" syncable="YES"/>
   <attribute name="title" optional="NO" attributeType="String" syncable="YES"/>
-  <relationship name="author" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Author" inverseName="articles" inverseEntity="Article" syncable="YES"/>
+  <relationship name="author" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Author" inverseName="articles" inverseEntity="Author" syncable="YES"/>
 </entity>
       }
 
