@@ -65,11 +65,18 @@ module XCDM
       e.relationship('author', maxCount: 1, minCount: 1)
       assert_equal [{ optional: "YES", deletionRule: "Nullify", syncable: "YES",
                       name: "author", minCount: "1", maxCount: "1", destinationEntity:
-                      "Author", inverseName: "articles", inverseEntity: "Author" }], e.relationships
+                      "Author", inverseName: "article", inverseEntity: "Author" }], e.relationships
     end
 
     def test_has_one
       e.has_one 'author'
+      assert_equal [{ optional: "YES", deletionRule: "Nullify", syncable: "YES",
+                      name: "author", minCount: "1", maxCount: "1", destinationEntity:
+                      "Author", inverseName: "article", inverseEntity: "Author" }], e.relationships
+    end
+
+    def test_belongs_to
+      e.belongs_to 'author'
       assert_equal [{ optional: "YES", deletionRule: "Nullify", syncable: "YES",
                       name: "author", minCount: "1", maxCount: "1", destinationEntity:
                       "Author", inverseName: "articles", inverseEntity: "Author" }], e.relationships
@@ -83,7 +90,7 @@ module XCDM
     end
 
     def test_non_inferrable_relationship_with_inverse
-      e.has_one 'primary_author', inverse: 'Author.primary_articles'
+      e.belongs_to 'primary_author', inverse: 'Author.primary_articles'
       assert_equal [{ optional: "YES", deletionRule: "Nullify", syncable: "YES",
                       name: "primary_author", minCount: "1", maxCount: "1", destinationEntity:
                       "Author", inverseName: "primary_articles", inverseEntity: "Author" }], e.relationships
@@ -107,7 +114,7 @@ module XCDM
       e.datetime  :publishedAt, default: false
       e.string    :title,       optional: false
 
-      e.has_one   :author
+      e.belongs_to   :author
 
       assert_equal expected.to_s.strip, REXML::Document.new(e.to_xml).to_s.strip
 

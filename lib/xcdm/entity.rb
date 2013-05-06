@@ -70,13 +70,15 @@ module XCDM
     def relationship(name, options = {})
       relationship = {}
       relationship[:name] = name.to_s
+
       if options[:inverse]
         entity, relation = options.delete(:inverse).split('.')
         relationship[:destinationEntity] = relationship[:inverseEntity] = entity
         relationship[:inverseName] = relation
+        options.delete(:plural_inverse)
       else
         relationship[:destinationEntity] = relationship[:inverseEntity] = name.to_s.classify
-        if options[:maxCount].to_s == "1"
+        if options.delete(:plural_inverse)
           relationship[:inverseName] = self.name.underscore.pluralize
         else
           relationship[:inverseName] = self.name.underscore
@@ -88,6 +90,9 @@ module XCDM
       raw_relationship(relationship)
     end
 
+    def belongs_to(name, options = {})
+      relationship(name, {maxCount: 1, minCount: 1, plural_inverse: true}.merge(options))
+    end
 
     def has_one(name, options = {})
       relationship(name, {maxCount: 1, minCount: 1}.merge(options))
