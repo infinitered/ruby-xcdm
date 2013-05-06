@@ -82,6 +82,13 @@ module XCDM
                       "Author", inverseName: "article", inverseEntity: "Author" }], e.relationships
     end
 
+    def test_non_inferrable_relationship_with_inverse
+      e.has_one 'primary_author', inverse: 'Author.primary_articles'
+      assert_equal [{ optional: "YES", deletionRule: "Nullify", syncable: "YES",
+                      name: "primary_author", minCount: "1", maxCount: "1", destinationEntity:
+                      "Author", inverseName: "primary_articles", inverseEntity: "Author" }], e.relationships
+    end
+
     def test_to_xml
       expected = REXML::Document.new %{
 <entity name="Article" syncable="YES">

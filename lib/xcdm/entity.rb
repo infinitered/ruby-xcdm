@@ -70,11 +70,17 @@ module XCDM
     def relationship(name, options = {})
       relationship = {}
       relationship[:name] = name.to_s
-      relationship[:destinationEntity] = relationship[:inverseEntity] = name.to_s.classify
-      if options[:maxCount].to_s == "1"
-        relationship[:inverseName] = self.name.underscore.pluralize
+      if options[:inverse]
+        entity, relation = options.delete(:inverse).split('.')
+        relationship[:destinationEntity] = relationship[:inverseEntity] = entity
+        relationship[:inverseName] = relation
       else
-        relationship[:inverseName] = self.name.underscore
+        relationship[:destinationEntity] = relationship[:inverseEntity] = name.to_s.classify
+        if options[:maxCount].to_s == "1"
+          relationship[:inverseName] = self.name.underscore.pluralize
+        else
+          relationship[:inverseName] = self.name.underscore
+        end
       end
 
       normalize_values(options, relationship)
