@@ -1,7 +1,4 @@
-
-p "Basfasdf"
-
-if const_defined?(:Motion) && Motion.const_defined?(:Project)
+if defined?(Motion::Project::Config)
 
   namespace :schema do
 
