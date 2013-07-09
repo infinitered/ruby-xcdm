@@ -10,3 +10,5 @@ task :test do
     t.verbose = true
   end
 end
+
+task :default => :test
