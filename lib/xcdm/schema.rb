@@ -82,7 +82,7 @@ module XCDM
         Dir["#{@inpath}/*.rb"].each do |file|
           if File.file?(file)
             schema = @loader.load_file(file)
-            block.call(schema, file)
+            block.call(schema, file) if block_given?
           end
         end
       end
@@ -90,7 +90,7 @@ module XCDM
       def write_all(&block)
         @loader.schemas.each do |schema|
           filename = datamodel_file(schema.version)
-          block.call(schema, filename)
+          block.call(schema, filename) if block_given?
           File.open(filename, "w+") do |f|
             f.write(schema.to_xml)
           end

@@ -1,3 +1,6 @@
+require 'xcdm/schema'
+require 'xcdm/entity'
+
 if defined?(Motion::Project::Config)
 
   namespace :schema do
@@ -14,18 +17,13 @@ if defined?(Motion::Project::Config)
     task :build => :clean do
       Dir.chdir App.config.project_dir
       runner = XCDM::Schema::Runner.new( App.config.name, "schemas", "resources")
-      runner.load_all
-      runner.write_all
+      App.info "Generating", "Data Model #{App.config.name}"
+      runner.load_all { |schema, file| App.info "Loading", file }
+      runner.write_all { |schema, file| App.info "Writing", file }
     end
   end
 
   task :"build:simulator" => :"schema:build"
   task :"build:device" => :"schema:build"
-
-
-else
-
-  require 'xcdm/schema'
-  require 'xcdm/entity'
 
 end
