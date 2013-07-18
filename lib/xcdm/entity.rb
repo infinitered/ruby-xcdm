@@ -24,11 +24,12 @@ module XCDM
     }
 
 
-    attr_reader :name, :properties, :relationships
+    attr_reader :name, :properties, :relationships, :class_name
 
 
     def initialize(name, options = {})
       @name = name
+      @class_name = options[:class_name] || name
       @properties = []
       @relationships = []
     end
@@ -109,7 +110,7 @@ module XCDM
 
     def to_xml(builder = nil)
       builder ||= Builder::XmlMarkup.new(:indent => 2)
-      builder.entity(name: name, syncable: 'YES') do |xml|
+      builder.entity(name: name, syncable: 'YES', representedClassName: class_name ) do |xml|
         properties.each do |property|
           xml.attribute(property)
         end

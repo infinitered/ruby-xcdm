@@ -13,8 +13,8 @@ module XCDM
       @entities = []
     end
 
-    def entity(name, &block)
-      @entities << Entity.new(name).tap { |e| e.instance_eval(&block) }
+    def entity(name, options = {}, &block)
+      @entities << Entity.new(name, options).tap { |e| e.instance_eval(&block) }
     end
 
     def to_xml(builder = nil)
@@ -78,19 +78,19 @@ module XCDM
         File.join(dir, 'contents')
       end
 
-      def load_all
+      def load_all(&block)
         Dir["#{@inpath}/*.rb"].each do |file|
           if File.file?(file)
-            puts "loading #{file}..."
-            @loader.load_file(file)
+            schema = @loader.load_file(file)
+            block.call(schema, file)
           end
         end
       end
 
-      def write_all
+      def write_all(&block)
         @loader.schemas.each do |schema|
           filename = datamodel_file(schema.version)
-          puts "writing #{filename}"
+          block.call(schema, filename)
           File.open(filename, "w+") do |f|
             f.write(schema.to_xml)
           end

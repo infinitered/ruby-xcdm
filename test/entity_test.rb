@@ -98,7 +98,7 @@ module XCDM
 
     def test_to_xml
       expected = REXML::Document.new %{
-<entity name="Article" syncable="YES">
+<entity name="Article" representedClassName="Article" syncable="YES">
   <attribute name="body" optional="NO" attributeType="String" syncable="YES"/>
   <attribute name="length" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
   <attribute name="published" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>

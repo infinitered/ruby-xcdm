@@ -13,7 +13,9 @@ if defined?(Motion::Project::Config)
     desc "Generate the xcdatamodel file"
     task :build => :clean do
       Dir.chdir App.config.project_dir
-      system("xcdm", App.config.name, "schemas", "resources")
+      runner = XCDM::Schema::Runner.new( App.config.name, "schemas", "resources")
+      runner.load_all
+      runner.write_all
     end
   end
 
