@@ -27,7 +27,8 @@ module XCDM
     attr_reader :name, :properties, :relationships, :class_name
 
 
-    def initialize(name, options = {})
+    def initialize(schema, name, options = {})
+      @schema = schema
       @name = name
       @class_name = options[:class_name] || name
       @properties = []
@@ -92,15 +93,33 @@ module XCDM
     end
 
     def belongs_to(name, options = {})
-      relationship(name, {maxCount: 1, minCount: 1, plural_inverse: true}.merge(options))
+      case @schema.xcode_version 
+      when /4\..*/
+        options = {maxCount: 1, minCount: 1, plural_inverse: true}.merge(options)
+      else
+        options = {maxCount: 1, plural_inverse: true}.merge(options)
+      end
+      relationship(name, options)
     end
 
     def has_one(name, options = {})
-      relationship(name, {maxCount: 1, minCount: 1}.merge(options))
+      case @schema.xcode_version 
+      when /4\..*/
+        options = {maxCount: 1, minCount: 1}.merge(options)
+      else
+        options = {maxCount: 1}.merge(options)
+      end
+      relationship(name, options)
     end
 
     def has_many(name, options = {})
-      relationship(name, {maxCount: -1, minCount: 1}.merge(options))
+      case @schema.xcode_version 
+      when /4\..*/
+        options = {maxCount: -1, minCount: 1}.merge(options)
+      else
+        options = {toMany: true}.merge(options)
+      end
+      relationship(name, options)
     end
 
 

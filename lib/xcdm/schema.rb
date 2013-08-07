@@ -4,17 +4,19 @@ require 'fileutils'
 require 'plist'
 
 module XCDM
+
   class Schema
 
-    attr_reader :version, :entities
+    attr_reader :version, :entities, :xcode_version
 
-    def initialize(version)
+    def initialize(version, xcode_version)
       @version = version
+      @xcode_version = xcode_version
       @entities = []
     end
 
     def entity(name, options = {}, &block)
-      @entities << Entity.new(name, options).tap { |e| e.instance_eval(&block) }
+      @entities << Entity.new(self, name, options).tap { |e| e.instance_eval(&block) }
     end
 
     def to_xml(builder = nil)
@@ -23,17 +25,31 @@ module XCDM
 
       builder.instruct! :xml, :standalone => 'yes'
 
-      attrs = {
-        name: "",
-        userDefinedModelVersionIdentifier: version,
-        type: "com.apple.IDECoreDataModeler.DataModel",
-        documentVersion: "1.0", 
-        lastSavedToolsVersion: "2061",
-        systemVersion: "12D78",
-        minimumToolsVersion: "Xcode 4.3",
-        macOSVersion: "Automatic",
-        iOSVersion: "Automatic"
-      }
+      if xcode_version =~ /5\.x/
+        attrs = {
+          name: "",
+          userDefinedModelVersionIdentifier: version,
+          type: "com.apple.IDECoreDataModeler.DataModel",
+          documentVersion: "1.0", 
+          lastSavedToolsVersion: "3389",
+          systemVersion: "12E55",
+          minimumToolsVersion: "Xcode 5",
+          macOSVersion: "Automatic",
+          iOSVersion: "Automatic"
+        }
+      else
+        attrs = {
+          name: "",
+          userDefinedModelVersionIdentifier: version,
+          type: "com.apple.IDECoreDataModeler.DataModel",
+          documentVersion: "1.0", 
+          lastSavedToolsVersion: "2061",
+          systemVersion: "12D78",
+          minimumToolsVersion: "Xcode 4.3",
+          macOSVersion: "Automatic",
+          iOSVersion: "Automatic"
+        }
+      end
 
       builder.model(attrs) do |builder|
         entities.each do |entity|
@@ -45,13 +61,15 @@ module XCDM
     class Loader
 
       attr_reader :schemas
+      attr_reader :xcode_version
 
-      def initialize
+      def initialize(xcode_version)
+        @xcode_version = xcode_version
         @schemas = []
       end
 
       def schema(version, &block)
-        @found_schema = Schema.new(version).tap { |s| s.instance_eval(&block) }
+        @found_schema = Schema.new(version, xcode_version).tap { |s| s.instance_eval(&block) }
         @schemas << @found_schema 
       end
 
@@ -65,11 +83,11 @@ module XCDM
     end
 
     class Runner
-      def initialize(name, inpath, outpath)
+      def initialize(name, inpath, outpath, xcode_version)
         @inpath = inpath
         @name = name
         @container_path = File.join(outpath, "#{name}.xcdatamodeld")
-        @loader = Loader.new
+        @loader = Loader.new(xcode_version)
       end
 
       def datamodel_file(version)

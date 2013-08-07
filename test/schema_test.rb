@@ -8,12 +8,13 @@ module XCDM
   class SchemaTest < Test::Unit::TestCase
 
     def test_initialize
-      s = Schema.new("0.0.1")
+      s = Schema.new("0.0.1", "4.6")
       assert_equal "0.0.1", s.version
+      assert_equal "4.6", s.xcode_version
     end
 
     def test_entity
-      s = Schema.new("0.0.1")
+      s = Schema.new("0.0.1", "4.6")
       entity = nil
       s.entity("MyType") { entity = self; nil }
       assert entity.is_a?(Entity), "Block should be executed in context of the new entity" 
@@ -23,7 +24,7 @@ module XCDM
     def test_loader
       fixture = File.join(File.dirname(__FILE__), 'fixtures', '001_baseline.rb')
 
-      loader = Schema::Loader.new
+      loader = Schema::Loader.new("4.6")
       schema = loader.load_file(fixture)
       assert_not_nil schema
       assert_equal '0.0.1', schema.version
@@ -33,7 +34,7 @@ module XCDM
 
     def test_to_xml
       in_fixture = File.join(File.dirname(__FILE__), 'fixtures', '001_baseline.rb')
-      loader = Schema::Loader.new
+      loader = Schema::Loader.new("4.6")
       schema = loader.load_file(in_fixture)
 
       out_fixture = File.join(File.dirname(__FILE__), 'fixtures', 'Article.xcdatamodeld', 'Article.xcdatamodel', 'contents')

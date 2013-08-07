@@ -8,7 +8,8 @@ module XCDM
   class EntityTest < Test::Unit::TestCase
 
     def e
-      @e ||= Entity.new("Article") 
+      s = Schema.new("0.0.1", "4.6")
+      @e ||= Entity.new(s, "Article") 
     end
 
     def test_initialize
