@@ -1,7 +1,10 @@
 # ruby-xcdm
 
-This is a tool for generating the same xcdatamodeld files that XCode does when designing a datamodel for Core Data. 
-It is written in pure ruby, but it will be of particular interest to RubyMotion developers.  
+This is a tool for generating the same xcdatamodeld files that XCode does when
+designing a datamodel for Core Data.  It is written in pure ruby, but it will
+be of particular interest to RubyMotion developers.  It offers the essential
+features that XCode does, plus a text-based workflow (nicer for git, among
+other things) and some niceties, like automatic inverse relationships.
 
 ## Installation
 
@@ -17,7 +20,13 @@ Or install it yourself as:
 
     $ gem install ruby-xcdm
 
-## Usage
+## Usage (RubyMotion)
+
+1. Make a directory called "schemas" inside your RubyMotion project
+2. Create one schema version per file within the directory
+3. The schema will be generated automatically generated when you build
+
+## Usage (Plain Ruby)
 
 1. Make a directory to hold your schemas (a.k.a. data model in XCode parlance)
 2. Create one schema version per file within the directory
@@ -30,6 +39,7 @@ Or install it yourself as:
 
 Here's a sample schema file:
 
+```ruby
   schema "0.0.1" do
 
     entity "Article" do
@@ -50,10 +60,12 @@ Here's a sample schema file:
     end
 
   end
+```
 
-It's pretty self-explanatory. All the built-in data types are supported, and inverse relationships are 
-generated automatically.  If you need to set some of the more esoteric options on properties or
-relationships, you can include the raw parameters, like renamingIdentifier or defaultValueString.
+All the built-in data types are supported, and inverse relationships are
+generated automatically.  If you need to set some of the more esoteric options
+on properties or relationships, you can include the raw parameters, like
+renamingIdentifier or defaultValueString.
 
 ## Contributing
 
