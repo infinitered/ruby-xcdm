@@ -24,7 +24,14 @@ Or install it yourself as:
 
 1. Make a directory called "schemas" inside your RubyMotion project
 2. Create one schema version per file within the directory
-3. The schema will be generated automatically generated when you build
+3. To build the schema, run `rake schema:build`
+
+If you want to build the schema every time you run the simulator, add this to
+your Rakefile:
+
+```ruby
+task :"build:simulator" => :"schema:build"
+```
 
 ## Usage (Plain Ruby)
 
