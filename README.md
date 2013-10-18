@@ -57,7 +57,7 @@ Here's a sample schema file:
       datetime  :publishedAt, default: false
       string    :title,       optional: false
 
-      has_one   :author
+      belongs_to :author
     end
 
     entity "Author" do
