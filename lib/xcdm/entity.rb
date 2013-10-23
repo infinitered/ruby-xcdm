@@ -24,15 +24,24 @@ module XCDM
     }
 
 
-    attr_reader :name, :properties, :relationships, :class_name
+    attr_reader :name, :properties, :relationships, :class_name, :parent, :abstract
 
 
     def initialize(schema, name, options = {})
+      @options = options.dup
       @schema = schema
       @name = name
-      @class_name = options[:class_name] || name
+      @class_name = @options.delete(:class_name) || name
       @properties = []
       @relationships = []
+      @parent = @options.delete(:parent)
+      if @parent
+        @options['parentEntity'] = parent
+      end
+      @abstract = @options.delete(:abstract)
+      if @abstract
+        @options['isAbstract'] = normalize_value(@abstract)
+      end
     end
 
     def raw_property(options)
@@ -93,7 +102,7 @@ module XCDM
     end
 
     def belongs_to(name, options = {})
-      case @schema.xcode_version 
+      case @schema.xcode_version
       when /4\..*/
         options = {maxCount: 1, minCount: 1, plural_inverse: true}.merge(options)
       else
@@ -103,7 +112,7 @@ module XCDM
     end
 
     def has_one(name, options = {})
-      case @schema.xcode_version 
+      case @schema.xcode_version
       when /4\..*/
         options = {maxCount: 1, minCount: 1}.merge(options)
       else
@@ -113,7 +122,7 @@ module XCDM
     end
 
     def has_many(name, options = {})
-      case @schema.xcode_version 
+      case @schema.xcode_version
       when /4\..*/
         options = {maxCount: -1, minCount: 1}.merge(options)
       else
@@ -129,7 +138,8 @@ module XCDM
 
     def to_xml(builder = nil)
       builder ||= Builder::XmlMarkup.new(:indent => 2)
-      builder.entity(name: name, syncable: 'YES', representedClassName: class_name ) do |xml|
+      options = { name: name, syncable: 'YES', representedClassName: class_name }.merge(@options)
+      builder.entity(options) do |xml|
         properties.each do |property|
           xml.attribute(property)
         end

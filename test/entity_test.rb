@@ -7,9 +7,12 @@ require 'rexml/document'
 module XCDM
   class EntityTest < Test::Unit::TestCase
 
-    def e
+    attr_reader :e, :pub
+
+    def setup
       s = Schema.new("0.0.1", "4.6")
-      @e ||= Entity.new(s, "Article") 
+      @pub ||= Entity.new(s, "Publication", abstract: true)
+      @e ||= Entity.new(s, "Article", parent: "Publication")
     end
 
     def test_initialize
@@ -56,6 +59,14 @@ module XCDM
       assert_equal 'Transformable', Entity.convert_type(:transformable)
     end
 
+    def test_parent_entity
+      assert_equal 'Publication', e.parent
+    end
+
+    def test_abstract_entity
+      assert pub.abstract
+    end
+
     def test_raw_relationship
       opts = { name: "author", minCount: "1", maxCount: "1", destinationEntity: "Author", inverseName: "articles", inverseEntity: "Author" }
       e.raw_relationship(opts)
@@ -99,7 +110,7 @@ module XCDM
 
     def test_to_xml
       expected = REXML::Document.new %{
-<entity name="Article" representedClassName="Article" syncable="YES">
+<entity name="Article" representedClassName="Article" parentEntity="Publication" syncable="YES">
   <attribute name="body" optional="NO" attributeType="String" syncable="YES"/>
   <attribute name="length" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
   <attribute name="published" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -119,6 +130,12 @@ module XCDM
 
       assert_equal expected.to_s.strip, REXML::Document.new(e.to_xml).to_s.strip
 
+      expected = REXML::Document.new %{
+<entity name="Publication" representedClassName="Publication" isAbstract="YES" syncable="YES">
+</entity>
+      }
+
+      assert_equal expected.to_s.strip, REXML::Document.new(pub.to_xml).to_s.strip
     end
 
   end
