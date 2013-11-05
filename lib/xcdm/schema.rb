@@ -68,8 +68,9 @@ module XCDM
         @schemas = []
       end
 
-      def schema(version, &block)
-        @found_schema = Schema.new(version, xcode_version).tap { |s| s.instance_eval(&block) }
+      def schema(version, options = {}, &block)
+        xcv = options[:xcode_version] || xcode_version
+        @found_schema = Schema.new(version, xcv).tap { |s| s.instance_eval(&block) }
         @schemas << @found_schema 
       end
 
