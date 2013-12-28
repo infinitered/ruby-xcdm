@@ -69,8 +69,41 @@ Here's a sample schema file:
   end
 ```
 
-All the built-in data types are supported, and inverse relationships are
-generated automatically.  If you need to set some of the more esoteric options
+All the built-in data types are supported:
+
+* integer16
+* integer32
+* integer64
+* decimal
+* double
+* float
+* string
+* boolean
+* datetime
+* binary
+* transformable
+
+Inverse relationships are generated automatically.
+If the inverse relationship cannot be derived 
+from the association name, you can use the :inverse option:
+
+```ruby
+  schema "0.0.1" do
+
+    entity "Game" do
+      belongs_to :away_team, inverse: "Team.away_games"
+      belongs_to :home_team, inverse: "Team.home_games"
+    end
+
+    entity "Team" do
+      has_many :away_games, inverse: "Game.away_team"
+      has_many :home_games, inverse: "Game.home_team"
+    end
+
+  end
+```
+
+If you need to set some of the more esoteric options
 on properties or relationships, you can include the raw parameters, like
 renamingIdentifier or defaultValueString.
 
