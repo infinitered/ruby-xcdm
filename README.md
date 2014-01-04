@@ -10,15 +10,21 @@ workflow and some niceties, like automatic inverse relationships.
 
 Add this line to your application's Gemfile:
 
-    gem 'ruby-xcdm'
+```ruby
+  gem 'ruby-xcdm'
+```
 
 And then execute:
 
-    $ bundle
+```
+  $ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install ruby-xcdm
+```
+  $ gem install ruby-xcdm
+```
 
 ## Usage (RubyMotion)
 
@@ -39,7 +45,9 @@ task :"build:simulator" => :"schema:build"
 2. Create one schema version per file within the directory
 3. Run the command to generate a datamodel:
 
+```
   xcdm MyApplicationName schemadir datamodeldestdir
+```
 
 
 ## Schema File Format
