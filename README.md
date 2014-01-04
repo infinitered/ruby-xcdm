@@ -1,10 +1,10 @@
 # ruby-xcdm
 
-This is a tool for generating the same xcdatamodeld files that XCode does when
-designing a datamodel for Core Data.  It is written in pure ruby, but it will
-be of particular interest to RubyMotion developers.  It offers the essential
-features that XCode does, plus a text-based workflow (nicer for git, among
-other things) and some niceties, like automatic inverse relationships.
+This is a tool for generating the same xcdatamodeld files that XCode
+does when designing a datamodel for Core Data.  It is written in pure
+ruby, but it will be of particular interest to RubyMotion developers.
+It offers the essential features that XCode does, plus a text-based
+workflow and some niceties, like automatic inverse relationships.
 
 ## Installation
 
@@ -26,8 +26,8 @@ Or install it yourself as:
 2. Create one schema version per file within the directory
 3. To build the schema, run `rake schema:build`
 
-If you want to build the schema every time you run the simulator, add this to
-your Rakefile:
+If you want to build the schema every time you run the simulator, add
+this to your Rakefile:
 
 ```ruby
 task :"build:simulator" => :"schema:build"
@@ -47,7 +47,7 @@ task :"build:simulator" => :"schema:build"
 Here's a sample schema file:
 
 ```ruby
-  schema "0.0.1" do
+  schema "001" do
 
     entity "Article" do
 
@@ -88,7 +88,7 @@ If the inverse relationship cannot be derived
 from the association name, you can use the :inverse option:
 
 ```ruby
-  schema "0.0.1" do
+  schema "001" do
 
     entity "Game" do
       belongs_to :away_team, inverse: "Team.away_games"
@@ -107,6 +107,15 @@ If you need to set some of the more esoteric options on properties or
 relationships, you can include the raw parameters from
 NSEntityDescription and NSAttributeDescription, like renamingIdentifier
 or defaultValueString.
+
+## Versioning
+
+To create new versions, simply copy the old version, increase the
+version string (the last one in sort order is always interpreted to be
+the current version) and make your changes.  So long as they conform
+to the [automatic versioning
+rules](https://developer.apple.com/library/ios/documentation/cocoa/conceptual/CoreDataVersioning/Articles/vmLightweightMigration.html#//apple_ref/doc/uid/TP40004399-CH4-SW2),
+everything should work seamlessly.
 
 ## Contributing
 
