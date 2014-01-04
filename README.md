@@ -103,9 +103,10 @@ from the association name, you can use the :inverse option:
   end
 ```
 
-If you need to set some of the more esoteric options
-on properties or relationships, you can include the raw parameters, like
-renamingIdentifier or defaultValueString.
+If you need to set some of the more esoteric options on properties or
+relationships, you can include the raw parameters from
+NSEntityDescription and NSAttributeDescription, like renamingIdentifier
+or defaultValueString.
 
 ## Contributing
 
