@@ -19,7 +19,7 @@ module XCDM
       string:        'String',
       boolean:       'Boolean',
       datetime:      'Date',
-      binary:        'Binary Data',
+      binary:        'Binary',
       transformable: 'Transformable'
     }
 

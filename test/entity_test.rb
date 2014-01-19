@@ -55,7 +55,7 @@ module XCDM
       assert_equal 'String',        Entity.convert_type(:string)
       assert_equal 'Boolean',       Entity.convert_type(:boolean)
       assert_equal 'Date',          Entity.convert_type(:datetime)
-      assert_equal 'Binary Data',   Entity.convert_type(:binary)
+      assert_equal 'Binary',        Entity.convert_type(:binary)
       assert_equal 'Transformable', Entity.convert_type(:transformable)
     end
 
