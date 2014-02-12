@@ -15,7 +15,7 @@ schema "0.0.1" do
   entity "Author" do
     float :fee
     string :name, optional: false
-    has_many :articles 
+    has_many :articles
   end
 
 end

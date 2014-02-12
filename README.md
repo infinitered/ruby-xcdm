@@ -93,24 +93,55 @@ All the built-in data types are supported:
 
 Inverse relationships are generated automatically.
 If the inverse relationship cannot be derived 
-from the association name, you can use the :inverse option:
+from the association name, you can use the ```:inverse``` option:
 
 ```ruby
-  schema "001" do
+  entity "Game" do
+    belongs_to :away_team, inverse: "Team.away_games"
+    belongs_to :home_team, inverse: "Team.home_games"
+  end
 
-    entity "Game" do
-      belongs_to :away_team, inverse: "Team.away_games"
-      belongs_to :home_team, inverse: "Team.home_games"
-    end
-
-    entity "Team" do
-      has_many :away_games, inverse: "Game.away_team"
-      has_many :home_games, inverse: "Game.home_team"
-    end
-
+  entity "Team" do
+    has_many :away_games, inverse: "Game.away_team"
+    has_many :home_games, inverse: "Game.home_team"
   end
 ```
 
+Many-to-many relationships are supported via the ```:plural_inverse``` option:
+
+```ruby
+  entity "Person" do
+    has_many :threads, plural_inverse: true
+  end
+
+  entity "Thread" do
+    has_many :people, plural_inverse: true
+  end
+```
+
+In this mode, Core Data will automatically create a relation table behind the 
+scenes.  If you want more control, you can make the intermediate table yourself:
+
+```ruby
+  entity "Person" do
+    has_many :postings
+  end
+
+  entity "Thread" do
+    has_many :postings
+  end
+
+  entity "Posting" do
+    belongs_to :person
+    belongs_to :thread
+
+    datetime :joined_at
+  end
+```
+
+Core data has no equivalent of ```:through``` in ActiveRecord, so you'll
+need to handle that relation yourself.  
+  
 If you need to set some of the more esoteric options on properties or
 relationships, you can include the raw parameters from
 NSEntityDescription and NSAttributeDescription, like renamingIdentifier
