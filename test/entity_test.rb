@@ -45,6 +45,11 @@ module XCDM
       assert_equal [{ optional: 'YES', syncable: 'YES', attributeType: 'Integer 32', name: 'count', defaultValueString: '1' }], e.properties
     end
 
+    def test_property_default_nil
+      e.integer32 'count', default: nil
+      assert_equal [{ optional: 'YES', syncable: 'YES', attributeType: 'Integer 32', name: 'count' }], e.properties
+    end
+
     def test_convert_type
       assert_equal 'Integer 16',    Entity.convert_type(:integer16)
       assert_equal 'Integer 32',    Entity.convert_type(:integer32)

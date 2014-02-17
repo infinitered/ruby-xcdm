@@ -56,6 +56,8 @@ module XCDM
 
       if !options[:default].nil?
         property[:defaultValueString] = normalize_value(options.delete(:default))
+      elsif options.key?(:default)
+        options.delete(:default)
       elsif [:integer16, :integer32, :integer64].include?(type)
         property[:defaultValueString] = "0"
       elsif [:float, :double, :decimal].include?(type)
