@@ -5,6 +5,7 @@ gem 'activesupport'
 gem 'rake'
 gem 'builder'
 gem 'plist'
+gem 'ruby-xcdm', path: '.'
 
 group :test do
   gem 'turn'

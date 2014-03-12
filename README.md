@@ -46,7 +46,7 @@ task :"build:simulator" => :"schema:build"
 3. Run the command to generate a datamodel:
 
 ```
-  xcdm MyApplicationName schemadir datamodeldestdir
+  xcdm MyApplicationName ./schema ./resources
 ```
 
 
@@ -139,7 +139,7 @@ scenes.  If you want more control, you can make the intermediate table yourself:
   end
 ```
 
-Core data has no equivalent of ```:through``` in ActiveRecord, so you'll
+Core Data has no equivalent of ```:through``` in ActiveRecord, so you'll
 need to handle that relation yourself.  
   
 If you need to set some of the more esoteric options on properties or

@@ -30,7 +30,7 @@ module XCDM
           name: "",
           userDefinedModelVersionIdentifier: version,
           type: "com.apple.IDECoreDataModeler.DataModel",
-          documentVersion: "1.0", 
+          documentVersion: "1.0",
           lastSavedToolsVersion: "3389",
           systemVersion: "12E55",
           minimumToolsVersion: "Xcode 5",
@@ -42,7 +42,7 @@ module XCDM
           name: "",
           userDefinedModelVersionIdentifier: version,
           type: "com.apple.IDECoreDataModeler.DataModel",
-          documentVersion: "1.0", 
+          documentVersion: "1.0",
           lastSavedToolsVersion: "2061",
           systemVersion: "12D78",
           minimumToolsVersion: "Xcode 4.3",
@@ -71,7 +71,7 @@ module XCDM
       def schema(version, options = {}, &block)
         xcv = options[:xcode_version] || xcode_version
         @found_schema = Schema.new(version, xcv).tap { |s| s.instance_eval(&block) }
-        @schemas << @found_schema 
+        @schemas << @found_schema
       end
 
       def load_file(file)
@@ -84,10 +84,19 @@ module XCDM
     end
 
     class Runner
-      def initialize(name, inpath, outpath, xcode_version)
+      def initialize(name, inpath, outpath, xcode_version = nil)
         @inpath = inpath
         @name = name
         @container_path = File.join(outpath, "#{name}.xcdatamodeld")
+        if !xcode_version
+          begin
+            `xcodebuild -version` =~ /(\d+\.\d+\.\d+)/
+            xcode_version = $1
+          rescue => e
+            p e
+            puts "XCode not installed?"
+          end
+        end
         @loader = Loader.new(xcode_version)
       end
 
