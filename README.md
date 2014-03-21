@@ -82,7 +82,7 @@ All the built-in data types are supported:
 * integer16
 * integer32
 * integer64
-* decimal
+* decimal (See note below)
 * double
 * float
 * string
@@ -90,6 +90,8 @@ All the built-in data types are supported:
 * datetime
 * binary
 * transformable
+
+NSDecimal is not well-supported in RubyMotion as of this writing.  They are converted to floats and lose precision.  HipByte is aware of the issue and intends to fix it, but until they do, you will need to use something else for storing currency.  For an example, see [here](https://github.com/skandragon/stringify_float).
 
 Inverse relationships are generated automatically.
 If the inverse relationship cannot be derived 
