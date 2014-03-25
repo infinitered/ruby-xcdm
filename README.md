@@ -6,6 +6,10 @@ ruby, but it will be of particular interest to RubyMotion developers.
 It offers the essential features that XCode does, plus a text-based
 workflow and some niceties, like automatic inverse relationships.
 
+[![Dependency Status](https://gemnasium.com/infinitered/ruby-xcdm.png)](https://gemnasium.com/infinitered/ruby-xcdm)
+[![Build Status](https://travis-ci.org/infinitered/ruby-xcdm.png?branch=master)](https://travis-ci.org/infinitered/ruby-xcdm)
+[![Gem Version](https://badge.fury.io/rb/ruby-xcdm.png)](http://badge.fury.io/rb/ruby-xcdm)
+
 ## Installation
 
 Add this line to your application's Gemfile:
