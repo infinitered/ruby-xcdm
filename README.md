@@ -62,7 +62,7 @@ Here's a sample schema file:
       string    :body,        optional: false
       integer32 :length
       boolean   :published,   default: false
-      datetime  :publishedAt, default: false
+      datetime  :publishedAt
       string    :title,       optional: false
 
       belongs_to :author
