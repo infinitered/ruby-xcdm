@@ -8,7 +8,7 @@ if defined?(Motion::Project::Config)
 
       desc "Clear the datamodel outputs"
       task :clean do
-        files = Dir.glob(File.join(App.config.project_dir, 'resources', App.config.name) + ".{momd,xcdatamodeld}")
+        files = Dir.glob(File.join(App.config.project_dir, 'resources', App.config.info_plist['CDQDBName'] || App.config.name) + ".{momd,xcdatamodeld}")
         files.each do |f|
           rm_rf f
         end
@@ -22,8 +22,9 @@ if defined?(Motion::Project::Config)
         else
           raise "could not determine xcode version"
         end
-        runner = XCDM::Schema::Runner.new( App.config.name, "schemas", "resources", App.config.sdk_version)
-        App.info "Generating", "Data Model #{App.config.name}"
+        name = App.config.info_plist['CDQDBName'] || App.config.name
+        runner = XCDM::Schema::Runner.new( name, "schemas", "resources", App.config.sdk_version)
+        App.info "Generating", "Data Model #{name}"
         runner.load_all { |schema, file| App.info "Loading", file }
         runner.write_all { |schema, file| App.info "Writing", file }
       end
