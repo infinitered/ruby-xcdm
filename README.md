@@ -43,6 +43,13 @@ this to your Rakefile:
 task :"build:simulator" => :"schema:build"
 ```
 
+You can override the name of the datamodel file, if you need to, using a config
+variable:
+
+```ruby
+  app.xcdm.name = "custom"
+```
+
 ## Usage (Plain Ruby)
 
 1. Make a directory to hold your schemas (a.k.a. data model in XCode parlance)
