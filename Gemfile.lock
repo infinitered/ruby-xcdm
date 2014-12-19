@@ -31,7 +31,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   builder
-  minitest (~> 5.1)
+  minitest
   plist
   rake
   ruby-xcdm!
