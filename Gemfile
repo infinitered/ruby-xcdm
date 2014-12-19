@@ -8,5 +8,5 @@ gem 'plist'
 gem 'ruby-xcdm', path: '.'
 
 group :test do
-  gem 'turn'
+  gem 'minitest'
 end
