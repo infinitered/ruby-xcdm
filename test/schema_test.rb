@@ -1,11 +1,11 @@
-
-require 'test/unit'
+require 'minitest/autorun'
+require 'xcdm/entity'
 require 'xcdm/schema'
 require 'rexml/document'
 require 'active_support/all'
 
 module XCDM
-  class SchemaTest < Test::Unit::TestCase
+  class SchemaTest < Minitest::Test
 
     def test_initialize
       s = Schema.new("0.0.1", "4.6")
@@ -26,7 +26,7 @@ module XCDM
 
       loader = Schema::Loader.new("4.6")
       schema = loader.load_file(fixture)
-      assert_not_nil schema
+      assert_equal schema.nil?, false
       assert_equal '0.0.1', schema.version
       assert_equal schema, loader.schemas.first
       assert_equal ['Article', 'Author'], schema.entities.map(&:name)

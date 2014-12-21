@@ -2,24 +2,28 @@ PATH
   remote: .
   specs:
     ruby-xcdm (0.0.8)
-      activesupport (~> 3.2)
+      activesupport (~> 4.1)
       builder (~> 3.2)
       plist (~> 3.1)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.2.17)
-      i18n (~> 0.6, >= 0.6.4)
-      multi_json (~> 1.0)
-    ansi (1.4.3)
-    builder (3.2.0)
-    i18n (0.6.9)
-    multi_json (1.9.2)
+    activesupport (4.1.8)
+      i18n (~> 0.6, >= 0.6.9)
+      json (~> 1.7, >= 1.7.7)
+      minitest (~> 5.1)
+      thread_safe (~> 0.1)
+      tzinfo (~> 1.1)
+    builder (3.2.2)
+    i18n (0.7.0)
+    json (1.8.1)
+    minitest (5.5.0)
     plist (3.1.0)
-    rake (10.0.4)
-    turn (0.9.6)
-      ansi
+    rake (10.4.2)
+    thread_safe (0.3.4)
+    tzinfo (1.2.2)
+      thread_safe (~> 0.1)
 
 PLATFORMS
   ruby
@@ -27,7 +31,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   builder
+  minitest
   plist
   rake
   ruby-xcdm!
-  turn

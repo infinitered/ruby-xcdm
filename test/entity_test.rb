@@ -1,16 +1,15 @@
-
-require 'test/unit'
+require 'minitest/autorun'
 require 'xcdm/entity'
-require 'turn'
+require 'xcdm/schema'
 require 'rexml/document'
 
 module XCDM
-  class EntityTest < Test::Unit::TestCase
+  class EntityTest < Minitest::Test
 
     attr_reader :e, :pub
 
     def setup
-      s = Schema.new("0.0.1", "4.6")
+      s = XCDM::Schema.new("0.0.1", "4.6")
       @pub ||= Entity.new(s, "Publication", abstract: true)
       @e ||= Entity.new(s, "Article", parent: "Publication")
     end
