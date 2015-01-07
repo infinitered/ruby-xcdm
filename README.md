@@ -152,6 +152,18 @@ scenes.  If you want more control, you can make the intermediate table yourself:
   end
 ```
 
+You can also have symmetric one-to-one relationships via has_one:
+
+```ruby
+  entity "Person" do
+    has_one :ego
+  end
+
+  entity "Ego" do
+    has_one :person
+  end
+```
+
 Core Data has no equivalent of ```:through``` in ActiveRecord, so you'll
 need to handle that relation yourself.  
   
