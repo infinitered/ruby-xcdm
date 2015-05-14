@@ -1,6 +1,6 @@
 # ruby-xcdm
 
-This is a tool for generating the same xcdatamodeld files that XCode
+This is a tool for generating the same xcdatamodeld files that Xcode
 does when designing a datamodel for Core Data.  It is written in pure
 ruby, but it will be of particular interest to RubyMotion developers.
 It offers the essential features that Xcode does, plus a text-based
