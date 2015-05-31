@@ -91,6 +91,13 @@ module XCDM
                       "Author", inverseName: "article", inverseEntity: "Author" }], e.relationships
     end
 
+    def test_has_one_should_not_plural
+      e.has_one 'address'
+      assert_equal [{ optional: "YES", deletionRule: "Nullify", syncable: "YES",
+                      name: "address", minCount: "1", maxCount: "1", destinationEntity:
+                      "Address", inverseName: "article", inverseEntity: "Address" }], e.relationships
+    end
+
     def test_belongs_to
       e.belongs_to 'author'
       assert_equal [{ optional: "YES", deletionRule: "Nullify", syncable: "YES",
