@@ -164,6 +164,25 @@ You can also have symmetric one-to-one relationships via has_one:
   end
 ```
 
+Deletion rules can be easily set on relationships and the default rule is "Nullify":
+
+```ruby
+  entity "Discussion" do
+    has_many :messages, deletionRule: "Cascade"
+  end
+
+  entity "Message" do
+    belongs_to :discusion
+  end
+
+  # Example:
+  # Discussion.first.messages.count => 10
+  # Messages.count => 10
+  # Discussion.first.destroy
+  # cdq.save
+  # Messages.count => 0
+```
+
 Core Data has no equivalent of ```:through``` in ActiveRecord, so you'll
 need to handle that relation yourself.  
   

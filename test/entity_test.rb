@@ -105,6 +105,13 @@ module XCDM
                       "Author", inverseName: "article", inverseEntity: "Author" }], e.relationships
     end
 
+    def test_deletion_cascade
+      e.has_many 'authors', { deletionRule: 'Cascade'}
+      assert_equal [{ optional: "YES", deletionRule: "Cascade", syncable: "YES",
+                      name: "authors", minCount: "1", maxCount: "-1", destinationEntity:
+                      "Author", inverseName: "article", inverseEntity: "Author" }], e.relationships
+    end
+
     def test_non_inferrable_relationship_with_inverse
       e.belongs_to 'primary_author', inverse: 'Author.primary_articles'
       assert_equal [{ optional: "YES", deletionRule: "Nullify", syncable: "YES",
