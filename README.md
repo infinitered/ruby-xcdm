@@ -10,7 +10,7 @@ workflow and some niceties, like automatic inverse relationships.
 [![Build Status](https://travis-ci.org/infinitered/ruby-xcdm.png?branch=master)](https://travis-ci.org/infinitered/ruby-xcdm)
 [![Gem Version](https://badge.fury.io/rb/ruby-xcdm.png)](http://badge.fury.io/rb/ruby-xcdm)
 
-ruby-xcdm is maintained by ![Infinite Red](http://infinite.red), a web and mobile development company based in Portland, OR and San Francisco, CA.
+ruby-xcdm is maintained by [Infinite Red](http://infinite.red), a web and mobile development company based in Portland, OR and San Francisco, CA.
 
 ## Installation
 
