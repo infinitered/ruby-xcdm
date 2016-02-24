@@ -24,7 +24,7 @@ module XCDM
     }
 
 
-    attr_reader :name, :properties, :relationships, :class_name, :parent, :abstract
+    attr_reader :name, :properties, :relationships, :class_name, :parent, :abstract, :user_info
 
 
     def initialize(schema, name, options = {})
@@ -34,6 +34,7 @@ module XCDM
       @class_name = @options.delete(:class_name) || name
       @properties = []
       @relationships = []
+      @user_info = []
       @parent = @options.delete(:parent)
       if @parent
         @options['parentEntity'] = parent
@@ -42,6 +43,10 @@ module XCDM
       if @abstract
         @options['isAbstract'] = normalize_value(@abstract)
       end
+    end
+
+    def user_info_entry(key, value)
+      @user_info << { key: key, value: value }
     end
 
     def raw_property(options)
@@ -148,6 +153,12 @@ module XCDM
 
         relationships.each do |relationship|
           xml.relationship(relationship)
+        end
+
+        user_info.each do |user_info_entry|
+          xml.userInfo do |user_info|
+            user_info.entry(user_info_entry)
+          end
         end
       end
     end
