@@ -84,7 +84,7 @@ Here's a sample schema file:
     entity "Author" do
       float :fee
       string :name, optional: false
-      has_many :articles 
+      has_many :articles
     end
 
   end
@@ -107,7 +107,7 @@ All the built-in data types are supported:
 NSDecimal is not well-supported in RubyMotion as of this writing.  They are converted to floats and lose precision.  HipByte is aware of the issue and intends to fix it, but until they do, you will need to use something else for storing currency.  For an example, see [here](https://github.com/skandragon/stringify_float).
 
 Inverse relationships are generated automatically.
-If the inverse relationship cannot be derived 
+If the inverse relationship cannot be derived
 from the association name, you can use the ```:inverse``` option:
 
 ```ruby
@@ -134,7 +134,7 @@ Many-to-many relationships are supported via the ```:plural_inverse``` option:
   end
 ```
 
-In this mode, Core Data will automatically create a relation table behind the 
+In this mode, Core Data will automatically create a relation table behind the
 scenes.  If you want more control, you can make the intermediate table yourself:
 
 ```ruby
@@ -187,11 +187,22 @@ Deletion rules can be easily set on relationships and the default rule is "Nulli
 
 Core Data has no equivalent of ```:through``` in ActiveRecord, so you'll
 need to handle that relation yourself.  
-  
+
 If you need to set some of the more esoteric options on properties or
 relationships, you can include the raw parameters from
 NSEntityDescription and NSAttributeDescription, like renamingIdentifier
 or defaultValueString.
+
+Additionally, if you need to set some `userInfo` properties, you can do so by
+adding `user_info` to either the entity, attribute or relationship:
+
+ ```ruby
+   entity "Person" do
+     user_info key: 'value'
+     string :body, user_info: { key: 'value'}
+     has_one :friend, user_info: { key: 'value' }
+   end
+ ```
 
 ## Versioning
 
