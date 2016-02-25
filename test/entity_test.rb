@@ -129,12 +129,18 @@ module XCDM
     def test_to_xml
       expected = REXML::Document.new %{
 <entity name="Article" representedClassName="Article" parentEntity="Publication" syncable="YES">
-  <attribute name="body" optional="NO" attributeType="String" syncable="YES"/>
-  <attribute name="length" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-  <attribute name="published" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-  <attribute name="publishedAt" optional="YES" attributeType="Date" defaultValueString="NO" syncable="YES"/>
-  <attribute name="title" optional="NO" attributeType="String" syncable="YES"/>
-  <relationship name="author" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Author" inverseName="articles" inverseEntity="Author" syncable="YES"/>
+  <attribute name="body" optional="NO" attributeType="String" syncable="YES">
+  </attribute>
+  <attribute name="length" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+  </attribute>
+  <attribute name="published" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES">
+  </attribute>
+  <attribute name="publishedAt" optional="YES" attributeType="Date" defaultValueString="NO" syncable="YES">
+  </attribute>
+  <attribute name="title" optional="NO" attributeType="String" syncable="YES">
+  </attribute>
+  <relationship name="author" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Author" inverseName="articles" inverseEntity="Author" syncable="YES">
+  </relationship>
 </entity>
       }
 

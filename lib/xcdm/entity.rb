@@ -24,7 +24,7 @@ module XCDM
     }
 
 
-    attr_reader :name, :properties, :relationships, :class_name, :parent, :abstract
+    attr_reader :name, :properties, :relationships, :class_name, :parent, :abstract, :user_info
 
 
     def initialize(schema, name, options = {})
@@ -33,6 +33,7 @@ module XCDM
       @name = name
       @class_name = @options.delete(:class_name) || name
       @properties = []
+      @user_info = []
       @relationships = []
       @parent = @options.delete(:parent)
       if @parent
@@ -42,6 +43,11 @@ module XCDM
       if @abstract
         @options['isAbstract'] = normalize_value(@abstract)
       end
+    end
+
+    def user_info(entries = {})
+      @user_info << normalize_user_info_entries(entries)
+      @user_info.flatten!
     end
 
     def raw_property(options)
@@ -62,6 +68,10 @@ module XCDM
         property[:defaultValueString] = "0"
       elsif [:float, :double, :decimal].include?(type)
         property[:defaultValueString] = "0.0"
+      end
+
+      if options[:user_info].present?
+        property[:user_info] = normalize_user_info_entries(options.delete(:user_info))
       end
 
       normalize_values(options, property)
@@ -98,8 +108,11 @@ module XCDM
         end
       end
 
-      normalize_values(options, relationship)
+      if options[:user_info]
+        relationship[:user_info] = normalize_user_info_entries(options.delete(:user_info))
+      end
 
+      normalize_values(options, relationship)
       raw_relationship(relationship)
     end
 
@@ -143,12 +156,26 @@ module XCDM
       options = { name: name, syncable: 'YES', representedClassName: class_name }.merge(@options)
       builder.entity(options) do |xml|
         properties.each do |property|
-          xml.attribute(property)
+          entries = property.delete(:user_info)
+
+          xml.attribute(property) do |attribute|
+            if entries
+              add_user_info_entries(attribute, entries)
+            end
+          end
         end
 
         relationships.each do |relationship|
-          xml.relationship(relationship)
+          entries = relationship.delete(:user_info)
+
+          xml.relationship(relationship) do |relationship_xml|
+            if entries
+              add_user_info_entries(relationship_xml, entries)
+            end
+          end
         end
+
+        add_user_info_entries(xml, user_info) unless user_info.empty?
       end
     end
 
@@ -168,5 +195,18 @@ module XCDM
       end
     end
 
+    def normalize_user_info_entries(user_info)
+      user_info.map do |key, value|
+        { key: key, value: value }
+      end
+    end
+
+    def add_user_info_entries(xml, entries)
+      xml.userInfo do |user_info|
+        entries.each do |entry|
+          user_info.entry(entry)
+        end
+      end
+    end
   end
 end
