@@ -128,7 +128,7 @@ module XCDM
 
     def test_to_xml
       expected = REXML::Document.new %{
-<entity name="Article" representedClassName="Article" parentEntity="Publication" syncable="YES">
+<entity name="Article" codeGenerationType='class' representedClassName="Article" parentEntity="Publication" syncable="YES">
   <attribute name="body" optional="NO" attributeType="String" syncable="YES"/>
   <attribute name="length" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
   <attribute name="published" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -149,7 +149,7 @@ module XCDM
       assert_equal expected.to_s.strip, REXML::Document.new(e.to_xml).to_s.strip
 
       expected = REXML::Document.new %{
-<entity name="Publication" representedClassName="Publication" isAbstract="YES" syncable="YES">
+<entity name="Publication" representedClassName="Publication" codeGenerationType='class' isAbstract="YES" syncable="YES">
 </entity>
       }
 
