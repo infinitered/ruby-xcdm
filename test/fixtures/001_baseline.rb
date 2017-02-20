@@ -25,7 +25,7 @@ __END__
 
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="0.0.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Article" syncable="YES">
+    <entity name="Article" syncable="YES" codeGenerationType='class'>
         <attribute name="body" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="length" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="published" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -33,7 +33,7 @@ __END__
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="author" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Author" inverseName="articles" inverseEntity="Article" syncable="YES"/>
     </entity>
-    <entity name="Author" syncable="YES">
+    <entity name="Author" syncable="YES" codeGenerationType='class'>
         <attribute name="fee" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="articles" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Article" inverseName="author" inverseEntity="Author" syncable="YES"/>

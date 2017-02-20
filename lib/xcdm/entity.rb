@@ -140,7 +140,12 @@ module XCDM
 
     def to_xml(builder = nil)
       builder ||= Builder::XmlMarkup.new(:indent => 2)
-      options = { name: name, syncable: 'YES', representedClassName: class_name }.merge(@options)
+      options = {
+        name: name,
+        syncable: 'YES',
+        representedClassName: class_name,
+        codeGenerationType: 'class'
+      }.merge(@options)
       builder.entity(options) do |xml|
         properties.each do |property|
           xml.attribute(property)
