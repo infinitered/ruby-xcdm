@@ -27,7 +27,7 @@ if defined?(Motion::Project::Config)
       task :build => :clean do
         App.config.xcdm.name ||= App.config.name
         Dir.chdir App.config.project_dir
-        if `xcodebuild -version` =~ /Xcode (\d.\d+)/
+        if `xcodebuild -version` =~ /Xcode (\d+.\d+)/
           xcode_version = $1
         else
           raise "could not determine xcode version"
