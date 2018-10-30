@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ruby-xcdm (0.0.10)
+    ruby-xcdm (0.0.11)
       activesupport (~> 4.1)
       builder (~> 3.2)
       plist (~> 3.1)
@@ -35,3 +35,6 @@ DEPENDENCIES
   plist
   rake
   ruby-xcdm!
+
+BUNDLED WITH
+   1.16.2
