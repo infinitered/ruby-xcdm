@@ -9,20 +9,20 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (4.1.8)
-      i18n (~> 0.6, >= 0.6.9)
-      json (~> 1.7, >= 1.7.7)
+    activesupport (4.2.11.3)
+      i18n (~> 0.7)
       minitest (~> 5.1)
-      thread_safe (~> 0.1)
+      thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    builder (3.2.2)
-    i18n (0.7.0)
-    json (1.8.1)
-    minitest (5.5.0)
-    plist (3.1.0)
-    rake (10.4.2)
-    thread_safe (0.3.4)
-    tzinfo (1.2.2)
+    builder (3.2.4)
+    concurrent-ruby (1.1.8)
+    i18n (0.9.5)
+      concurrent-ruby (~> 1.0)
+    minitest (5.14.3)
+    plist (3.6.0)
+    rake (13.0.3)
+    thread_safe (0.3.6)
+    tzinfo (1.2.9)
       thread_safe (~> 0.1)
 
 PLATFORMS
@@ -37,4 +37,4 @@ DEPENDENCIES
   ruby-xcdm!
 
 BUNDLED WITH
-   1.16.2
+   2.2.11
