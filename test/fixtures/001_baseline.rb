@@ -3,6 +3,7 @@ schema "0.0.1" do
 
   entity "Article" do
 
+    user_info_entry 'userinfotest', 'userinfovalue'
     string    :body,        optional: false
     integer32 :length
     boolean   :published,   default: false
@@ -32,6 +33,9 @@ __END__
         <attribute name="publishedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="author" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Author" inverseName="articles" inverseEntity="Article" syncable="YES"/>
+        <userInfo>
+            <entry key="userinfotest" value="userinfovalue"/>
+        </userInfo>
     </entity>
     <entity name="Author" syncable="YES" codeGenerationType='class'>
         <attribute name="fee" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>

@@ -193,6 +193,15 @@ relationships, you can include the raw parameters from
 NSEntityDescription and NSAttributeDescription, like renamingIdentifier
 or defaultValueString.
 
+Additionally, if you need to set some `userInfo` properties, you can do so by
+adding a `user_info_entry` to an entity:
+
+```ruby
+  entity "Person" do
+    user_info_entry 'my_key', 'my_value'
+  end
+```
+
 ## Versioning
 
 To create new versions, simply copy the old version, increase the

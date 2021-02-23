@@ -7,6 +7,9 @@
         <attribute name="publishedAt" optional="YES" attributeType="Date" defaultValueString="NO" syncable="YES"/>
         <attribute name="title" optional="NO" attributeType="String" syncable="YES"/>
         <relationship name="author" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Author" inverseName="articles" inverseEntity="Author" syncable="YES"/>
+        <userInfo>
+            <entry key="userinfotest" value="userinfovalue"/>
+        </userInfo>
     </entity>
     <entity codeGenerationType="class" name="Author" representedClassName="Author" syncable="YES">
         <attribute name="fee" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
