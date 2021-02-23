@@ -2,7 +2,7 @@ require 'minitest/autorun'
 require 'xcdm/entity'
 require 'xcdm/schema'
 require 'rexml/document'
-require 'active_support/all'
+require 'active_support/inflector'
 
 module XCDM
   class SchemaTest < Minitest::Test
