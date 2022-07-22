@@ -22,7 +22,7 @@ GEM
     plist (3.6.0)
     rake (13.0.3)
     thread_safe (0.3.6)
-    tzinfo (1.2.9)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
 
 PLATFORMS
