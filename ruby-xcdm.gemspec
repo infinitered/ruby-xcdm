@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '~> 2.7'
 
   spec.add_dependency "builder", "~> 3.2"
-  spec.add_dependency "activesupport", "~> 4.1"
+  spec.add_dependency "activesupport", ">= 4.1", "< 8.0"
   spec.add_dependency "plist", "~> 3.1"
 
   spec.add_development_dependency "bundler", "~> 2.2"
